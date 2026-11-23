@@ -1,1058 +1,2122 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLOOKWORLD — Официальный сайт игры</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <style>
-        :root {
-            --bg-dark: #101214;
-            --bg-card: #1a1d21;
-            --accent-green: #4caf50;
-            --accent-green-dark: #2e7d32;
-            --accent-green-hover: #57c25b;
-            --accent-orange: #ff9800;
-            --accent-red: #e53935;
-            --text-main: #ffffff;
-            --text-muted: #9aa0a6;
-            --border-color: #2c3138;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        .top-bar {
-            background-color: #15181c;
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .brand-mini {
-            font-weight: 800;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .brand-mini span {
-            color: var(--accent-green);
-        }
-
-        .user-panel {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-google-custom {
-            background-color: #ffffff;
-            color: #1f1f1f;
-            border: none;
-            padding: 9px 16px;
-            font-size: 0.92rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.1s, opacity 0.2s;
-        }
-
-        .btn-google-custom:hover {
-            opacity: 0.92;
-        }
-
-        .btn-google-custom:active {
-            transform: scale(0.98);
-        }
-
-        .nick-pill {
-            background-color: #23272c;
-            border: 1px solid var(--accent-green);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            color: #fff;
-        }
-
-        .nick-pill strong {
-            color: var(--accent-green);
-        }
-
-        .btn-small {
-            background-color: #2c3138;
-            color: #fff;
-            border: 1px solid #3c424b;
-            padding: 7px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-
-        .btn-small:hover {
-            border-color: var(--accent-green);
-        }
-
-        .btn-logout {
-            background-color: rgba(229, 57, 53, 0.15);
-            color: #ff6b6b;
-            border: 1px solid rgba(229, 57, 53, 0.4);
-        }
-
-        header {
-            background: radial-gradient(circle at top, #1f4222 0%, #101214 80%);
-            padding: 45px 20px 40px;
-            text-align: center;
-            border-bottom: 3px solid var(--accent-green);
-        }
-
-        .logo-blocks {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .block-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.3);
-        }
-
-        .b-grass { background: linear-gradient(to bottom, #4caf50 35%, #795548 35%); }
-        .b-stone { background-color: #757575; }
-        .b-gold { background-color: #ffc107; }
-        .b-nether { background-color: #b71c1c; }
-
-        header h1 {
-            font-size: 2.8rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            text-shadow: 0 4px 0 #000;
-        }
-
-        header h1 span {
-            color: var(--accent-green);
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 28px;
-        }
-
-        .header-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .btn-play {
-            display: inline-block;
-            background-color: var(--accent-green);
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.25rem;
-            font-weight: bold;
-            padding: 16px 44px;
-            border-radius: 8px;
-            border-bottom: 5px solid var(--accent-green-dark);
-            transition: transform 0.1s, background-color 0.2s;
-            letter-spacing: 1px;
-        }
-
-        .btn-play:hover {
-            background-color: var(--accent-green-hover);
-        }
-
-        .btn-play:active {
-            transform: translateY(3px);
-            border-bottom: 2px solid var(--accent-green-dark);
-        }
-
-        .btn-share {
-            background-color: #23272c;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 16px 22px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
-
-        .btn-share:hover {
-            background-color: #2c3138;
-            border-color: var(--accent-green);
-        }
-
-        .container {
-            max-width: 880px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--accent-green);
-            padding-left: 12px;
-        }
-
-        .section-title.nether-title {
-            border-left-color: var(--accent-red);
-        }
-
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 22px;
-            margin-bottom: 28px;
-        }
-
-        .card.nether-card {
-            border-color: rgba(229, 57, 53, 0.4);
-            background: linear-gradient(145deg, #1a1d21 0%, #241517 100%);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .card-title-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .badge {
-            display: inline-block;
-            background-color: var(--accent-green);
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 9px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .badge-new {
-            background-color: #ff5722;
-        }
-
-        .badge-old {
-            background-color: #455a64;
-        }
-
-        .badge-dev {
-            background-color: var(--accent-orange);
-            color: #101214;
-        }
-
-        .schedule-pill {
-            background-color: rgba(255, 152, 0, 0.12);
-            color: var(--accent-orange);
-            border: 1px solid rgba(255, 152, 0, 0.35);
-            font-size: 0.85rem;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        .timer-box {
-            background-color: #121417;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .timer-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .timer-grid {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .timer-unit {
-            background-color: #1a1d21;
-            border: 1px solid #2f353d;
-            border-radius: 6px;
-            padding: 8px 14px;
-            min-width: 72px;
-        }
-
-        .timer-num {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--accent-orange);
-            font-family: monospace;
-            line-height: 1.2;
-        }
-
-        .timer-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .update-list {
-            list-style: none;
-        }
-
-        .update-list li {
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-            color: #e0e0e0;
-        }
-
-        .update-list li::before {
-            content: "■";
-            color: var(--accent-green);
-            position: absolute;
-            left: 0;
-            font-size: 0.9rem;
-            top: 2px;
-        }
-
-        .nether-steps {
-            list-style: none;
-            counter-reset: step-counter;
-        }
-
-        .nether-steps li {
-            counter-increment: step-counter;
-            margin-bottom: 12px;
-            padding-left: 34px;
-            position: relative;
-            color: #f0f0f0;
-        }
-
-        .nether-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 1px;
-            width: 22px;
-            height: 22px;
-            background-color: var(--accent-red);
-            color: #fff;
-            font-weight: bold;
-            font-size: 0.85rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .idea-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .active-nick-line {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        .active-nick-line strong {
-            color: var(--accent-green);
-        }
-
-        .input-field, .textarea-field {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background-color: #121417;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-field:focus, .textarea-field:focus {
-            border-color: var(--accent-green);
-        }
-
-        .textarea-field {
-            min-height: 105px;
-            resize: vertical;
-        }
-
-        .btn-submit-idea {
-            background-color: var(--accent-green);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            font-size: 1.05rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-submit-idea:hover {
-            background-color: var(--accent-green-hover);
-        }
-
-        .status-msg {
-            font-size: 0.9rem;
-            padding: 10px 12px;
-            border-radius: 6px;
-            display: none;
-        }
-
-        .status-success {
-            display: block;
-            background-color: rgba(76, 175, 80, 0.15);
-            border: 1px solid rgba(76, 175, 80, 0.4);
-            color: #81c784;
-        }
-
-        .status-warn {
-            display: block;
-            background-color: rgba(255, 152, 0, 0.15);
-            border: 1px solid rgba(255, 152, 0, 0.4);
-            color: #ffb74d;
-        }
-
-        .recent-ideas {
-            margin-top: 20px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 16px;
-        }
-
-        .recent-ideas h4 {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .idea-item {
-            background-color: #121417;
-            border: 1px solid #252a30;
-            border-radius: 6px;
-            padding: 10px 14px;
-            margin-bottom: 8px;
-        }
-
-        .idea-meta {
-            font-size: 0.8rem;
-            color: var(--accent-green);
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .idea-text {
-            font-size: 0.95rem;
-            color: #e6e6e6;
-        }
-
-        .btn-bot-link {
-            display: inline-block;
-            margin-top: 12px;
-            color: var(--accent-green);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .btn-bot-link:hover {
-            text-decoration: underline;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.78);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 24px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .modal-box h3 {
-            margin-bottom: 10px;
-        }
-
-        .modal-box p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
-        }
-
-        footer a {
-            color: var(--accent-green);
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kot_lgromanchik's Studio Games — Игры</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg-page: #eceff1;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f5f5f5;
+      --bg-sidebar-active: #e0e0e0;
+      --gp-green: #689f38;
+      --gp-green-dark: #558b2f;
+      --gp-blue: #4285f4;
+      --gp-blue-dark: #3367d6;
+      --text-main: #212121;
+      --text-muted: #757575;
+      --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.14), 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-card-hover: 0 4px 10px rgba(0, 0, 0, 0.18);
+      --shadow-modal: 0 12px 32px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: var(--bg-page);
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(104, 159, 56, 0.08), transparent 36%),
+        radial-gradient(circle at 88% 15%, rgba(66, 133, 244, 0.08), transparent 40%),
+        linear-gradient(180deg, #f3f5f7 0%, #e9edf0 100%);
+      color: var(--text-main);
+      line-height: 1.4;
+      min-height: 100vh;
+    }
+
+    /* Top Bar */
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #d8d8d8;
+      position: sticky;
+      top: 0;
+      z-index: 120;
+    }
+
+    .topbar-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      height: 58px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: #424242;
+      white-space: nowrap;
+    }
+
+    .brand-title strong {
+      font-weight: 500;
+      color: #212121;
+    }
+
+    .search-wrap {
+      flex: 1;
+      max-width: 680px;
+      display: flex;
+      height: 34px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+
+    .search-input {
+      flex: 1;
+      height: 100%;
+      border: 1px solid #d5d5d5;
+      border-right: none;
+      background: #ffffff;
+      padding: 0 12px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--gp-blue);
+    }
+
+    .search-btn {
+      width: 58px;
+      height: 100%;
+      border: 1px solid var(--gp-blue-dark);
+      background: var(--gp-blue);
+      color: #ffffff;
+      border-radius: 0 2px 2px 0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background-color 0.15s;
+    }
+
+    .search-btn:hover {
+      background: var(--gp-blue-dark);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .pc-only-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 2px;
+      background: #f1f8e9;
+      border: 1px solid #c5e1a5;
+      color: #33691e;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .user-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 32px;
+      padding: 0 10px 0 4px;
+      border: 1px solid #dadce0;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #202124;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .user-chip:hover {
+      background: #f8f9fa;
+    }
+
+    .user-avatar-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #4285f4;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .user-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Green Section Bar */
+    .green-subbar {
+      background: var(--gp-green);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .green-subbar-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      height: 46px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar-header-slot {
+      width: 224px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 400;
+      padding-right: 12px;
+    }
+
+    .subnav-tabs {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .subnav-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .subnav-btn {
+      position: relative;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.9);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .subnav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .subnav-btn.active {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .subnav-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+      background: #ffffff;
+    }
+
+    .category-dropdown-wrap {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .category-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 190px;
+      background: #ffffff;
+      border: 1px solid #dcdcdc;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+      z-index: 150;
+      padding: 6px 0;
+    }
+
+    .category-menu.open {
+      display: block;
+    }
+
+    .category-menu-item {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .category-menu-item:hover {
+      background: #f5f5f5;
+    }
+
+    .category-menu-item.active {
+      color: var(--gp-green-dark);
+      font-weight: 700;
+      background: #f1f8e9;
+    }
+
+    /* Main Workspace Layout */
+    .workspace {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      padding: 0 16px 48px;
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      width: 224px;
+      flex-shrink: 0;
+      background: var(--bg-sidebar);
+      border-left: 1px solid #e5e5e5;
+      border-right: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      padding-bottom: 16px;
+      position: sticky;
+      top: 104px;
+      transition: width 0.2s ease;
+    }
+
+    .sidebar.collapsed {
+      width: 54px;
+    }
+
+    .sidebar-group {
+      border-bottom: 1px solid #e2e2e2;
+      padding: 8px 0;
+      position: relative;
+    }
+
+    .sidebar-group:last-child {
+      border-bottom: none;
+    }
+
+    .sidebar-collapse-btn {
+      position: absolute;
+      right: 8px;
+      top: 10px;
+      width: 24px;
+      height: 24px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      border-radius: 2px;
+    }
+
+    .sidebar-collapse-btn:hover {
+      background: #e8e8e8;
+      color: var(--text-main);
+    }
+
+    .sidebar-item {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 7px 18px;
+      text-align: left;
+      font-family: inherit;
+      font-size: 13px;
+      color: #424242;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .sidebar.collapsed .sidebar-item {
+      padding: 8px 14px;
+      justify-content: center;
+    }
+
+    .sidebar.collapsed .sidebar-label,
+    .sidebar.collapsed .sidebar-collapse-btn {
+      display: none;
+    }
+
+    .sidebar-item:hover {
+      background: #ebebeb;
+    }
+
+    .sidebar-item.active {
+      background: var(--bg-sidebar-active);
+      color: #212121;
+      font-weight: 700;
+      border-left: 3px solid var(--gp-green);
+      padding-left: 15px;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      min-width: 0;
+      padding: 20px 0 0 24px;
+    }
+
+    .sidebar.collapsed + .content-area {
+      padding-left: 20px;
+    }
+
+    /* Section Block */
+    .store-section {
+      margin-bottom: 30px;
+    }
+
+    .section-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .section-heading {
+      font-size: 20px;
+      font-weight: 400;
+      color: #373737;
+      line-height: 1.25;
+    }
+
+    .more-btn {
+      background: var(--gp-green);
+      color: #ffffff;
+      border: none;
+      border-radius: 2px;
+      padding: 6px 14px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.15s;
+    }
+
+    .more-btn:hover {
+      background: var(--gp-green-dark);
+    }
+
+    /* 5-Column Reference Cards Grid */
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid #e4e4e4;
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+      border-color: #cccccc;
+    }
+
+    .app-cover-box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      margin-bottom: 10px;
+      border: 1px solid #eeeeee;
+      border-radius: 12px;
+    }
+
+    .app-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #212121;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .app-dev {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 8px;
+    }
+
+    .app-card-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .stars-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 1px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .star-on {
+      color: #616161;
+    }
+
+    .star-off {
+      color: #dcdcdc;
+    }
+
+    /* Empty state */
+    .empty-box {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #dcdcdc;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .empty-box.visible {
+      display: block;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      background: rgba(0, 0, 0, 0.52);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 760px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 1px solid #d0d0d0;
+      box-shadow: var(--shadow-modal);
+      padding: 22px 26px 28px;
+      position: relative;
+    }
+
+    .modal-dialog.narrow {
+      max-width: 430px;
+    }
+
+    .modal-close {
+      position: sticky;
+      top: 0;
+      float: right;
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dcdcdc;
+      background: #f5f5f5;
+      color: #212121;
+      font-size: 18px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .modal-close:hover {
+      background: #e6e6e6;
+    }
+
+    .modal-top {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      padding-right: 36px;
+    }
+
+    .modal-art {
+      width: 96px;
+      height: 96px;
+      flex-shrink: 0;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 500;
+      color: #212121;
+      margin-bottom: 4px;
+    }
+
+    .modal-sub {
+      font-size: 13px;
+      color: var(--gp-green-dark);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .modal-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .badge-chip {
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      padding: 2px 8px;
+    }
+
+    /* Google Play Screenshots Strip */
+    .screenshots-strip {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+    }
+
+    .screenshot-thumb {
+      flex: 0 0 260px;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #dcdcdc;
+      background: #111318;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .screenshot-thumb:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.22);
+    }
+
+    .screenshot-thumb svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Lightbox */
+    .lightbox-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 320;
+      background: rgba(0, 0, 0, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox-backdrop.open {
+      display: flex;
+    }
+
+    .lightbox-box {
+      width: 100%;
+      max-width: 880px;
+      position: relative;
+    }
+
+    .lightbox-stage {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+      background: #000;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -42px;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .dl-panel {
+      background: #f9fbe7;
+      border: 1px solid #dce775;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .dl-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-green {
+      background: var(--gp-green);
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-green:hover {
+      background: var(--gp-green-dark);
+    }
+
+    .btn-outline-sm {
+      background: #ffffff;
+      color: #424242;
+      border: 1px solid #cccccc;
+      padding: 5px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-outline-sm:hover {
+      background: #f5f5f5;
+    }
+
+    .dl-progress {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .dl-progress.visible {
+      display: block;
+    }
+
+    .dl-bar-bg {
+      height: 7px;
+      background: #e0e0e0;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+
+    .dl-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--gp-green);
+      transition: width 0.15s;
+    }
+
+    .modal-block {
+      margin-bottom: 18px;
+    }
+
+    .modal-block h3 {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #212121;
+      border-bottom: 1px solid #eeeeee;
+      padding-bottom: 4px;
+    }
+
+    .review-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .review-account-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: #ffffff;
+      border: 1px solid #e4e4e4;
+      padding: 8px 10px;
+      border-radius: 3px;
+    }
+
+    .review-account-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .review-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .ctrl-input,
+    .ctrl-select,
+    .ctrl-textarea {
+      font-family: inherit;
+      font-size: 13px;
+      border: 1px solid #cccccc;
+      background: #ffffff;
+      color: #212121;
+      padding: 7px 10px;
+    }
+
+    .ctrl-input {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .ctrl-textarea {
+      width: 100%;
+      min-height: 62px;
+      resize: vertical;
+    }
+
+    .review-card {
+      background: #ffffff;
+      border: 1px solid #eeeeee;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .review-author-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .review-handle {
+      font-size: 12px;
+      color: var(--gp-green-dark);
+      font-weight: 500;
+    }
+
+    .review-mini-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #4285f4;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .review-mini-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gsi-slot-center {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0;
+      min-height: 42px;
+    }
+
+    .nick-create-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 1080px) {
+      .cards-row {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 780px) {
+      .sidebar-header-slot {
+        display: none;
+      }
+
+      .workspace {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        padding-bottom: 6px;
+      }
+
+      .sidebar-group {
+        border-bottom: none;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 4px;
+      }
+
+      .sidebar-item {
+        width: auto;
+        padding: 6px 10px;
+      }
+
+      .sidebar-collapse-btn {
+        display: none;
+      }
+
+      .content-area {
+        padding: 14px 0 0 0;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar-inner {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .search-wrap {
+        order: 3;
+        flex-basis: 100%;
+        max-width: none;
+      }
+
+      .cards-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .modal-top {
+        flex-direction: column;
+      }
+
+      .screenshot-thumb {
+        flex: 0 0 220px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-link" id="homeLogoBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3.5 2.5L14.5 12L3.5 21.5V2.5Z" fill="#4fc3f7"/>
+          <path d="M14.5 12L18.2 8.8L5.2 1.8L14.5 12Z" fill="#66bb6a"/>
+          <path d="M14.5 12L5.2 22.2L18.2 15.2L14.5 12Z" fill="#ffa726"/>
+          <path d="M18.2 8.8L21.5 12L18.2 15.2L14.5 12L18.2 8.8Z" fill="#ef5350"/>
+        </svg>
+        <span class="brand-title"><strong>kot_lgromanchik's</strong> Studio Games</span>
+      </div>
 
-    <div class="top-bar">
-        <div class="brand-mini">BLOOK<span>WORLD</span> • v1.1</div>
+      <form class="search-wrap" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Поиск игр"
+          autocomplete="off"
+        />
+        <button type="submit" class="search-btn" title="Найти">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M21 21L16.65 16.65"/>
+          </svg>
+        </button>
+      </form>
 
-        <div class="user-panel" id="authLoggedOut">
-            <button type="button" class="btn-google-custom" onclick="startGoogleAuth()">
-                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                Создать аккаунт / Войти через Google
+      <div class="topbar-right">
+        <span class="pc-only-pill" title="Доступны только сборки для ПК">ПК</span>
+        <button type="button" class="user-chip" id="headerGoogleBtn" title="Вход через Google">
+          <span class="user-avatar-circle" id="headerAvatarCircle">G</span>
+          <span id="headerGoogleLabel">Войти через Google</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="green-subbar">
+      <div class="green-subbar-inner">
+        <div class="sidebar-header-slot">
+          <span style="font-size:15px;">&#128187;</span>
+          <span>Игры</span>
+        </div>
+
+        <nav class="subnav-tabs" aria-label="Разделы магазина">
+          <div class="category-dropdown-wrap" id="categoryDropdownWrap">
+            <button type="button" class="subnav-btn" id="categoryToggleBtn">
+              <span id="categoryBtnLabel">Категории</span>
+              <span style="font-size:10px;">&#9660;</span>
             </button>
-            <div id="googleBtnContainer"></div>
-        </div>
+            <div class="category-menu" id="categoryMenu"></div>
+          </div>
 
-        <div class="user-panel" id="authLoggedIn" style="display: none;">
-            <div class="nick-pill">Ник: <strong id="userNickname">Игрок</strong></div>
-            <button type="button" class="btn-small" onclick="openNickModal()">✏️ Сменить ник</button>
-            <button type="button" class="btn-small btn-logout" onclick="logoutGoogle()">Выйти</button>
-        </div>
+          <button type="button" class="subnav-btn active" data-tab="home">Главная</button>
+          <button type="button" class="subnav-btn" data-tab="top">Топ игр</button>
+          <button type="button" class="subnav-btn" data-tab="new">Новинки</button>
+        </nav>
+      </div>
     </div>
+  </header>
 
-    <div class="modal-overlay" id="nickModal">
-        <div class="modal-box">
-            <h3>🎮 Введи свой ник</h3>
-            <p>Ник сохраняется в базе Firebase и отображается на сайте</p>
-            <input type="text" id="nickInput" class="input-field" style="margin-bottom: 14px;" placeholder="Например: Kot_Igromanchik" maxlength="20">
-            <button type="button" class="btn-submit-idea" style="width: 100%;" onclick="saveNickname()">Сохранить ник</button>
-        </div>
+  <div class="workspace">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-group">
+        <button type="button" class="sidebar-collapse-btn" id="collapseSidebarBtn" title="Свернуть меню">&lsaquo;</button>
+        <button type="button" class="sidebar-item active" data-side="store">
+          <span>&#128187;</span>
+          <span class="sidebar-label">Маркет</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="content-area">
+      <div id="sectionsContainer"></div>
+
+      <div class="empty-box" id="emptyBox">
+        <h3 style="font-size:17px;margin-bottom:6px;">По вашему запросу ничего не найдено</h3>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">Попробуйте другое название или выберите раздел «Маркет».</p>
+        <button type="button" class="btn-green" id="emptyResetBtn">Показать все игры</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Game Details Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog" id="modalDialog">
+      <button type="button" class="modal-close" id="modalCloseBtn" aria-label="Закрыть">&times;</button>
+      <div id="modalBody"></div>
     </div>
+  </div>
 
-    <header>
-        <div class="logo-blocks">
-            <div class="block-icon b-grass"></div>
-            <div class="block-icon b-stone"></div>
-            <div class="block-icon b-gold"></div>
-            <div class="block-icon b-nether"></div>
-        </div>
-        <h1>BLOOK<span>WORLD</span></h1>
-        <p>Строй, исследуй и создавай свой мир прямо в браузере</p>
-        <div class="header-buttons">
-            <a href="https://denis2610kak-lgtm.github.io/effective-computing-machine/" target="_blank" class="btn-play">▶ ИГРАТЬ В BLOOKWORLD</a>
-            <button type="button" class="btn-share" id="copyBtn" onclick="copyGameLink()">📋 Ссылка на игру</button>
-        </div>
-    </header>
-
-    <div class="container">
-
-        <h2 class="section-title">Что нового в текущей версии</h2>
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title-group">
-                    <span class="badge badge-new">Новое • Актуально</span>
-                    <strong>BLOOKWORLD v1.1 — Новогоднее и Адское обновление</strong>
-                </div>
-            </div>
-            <ul class="update-list">
-                <li><strong>Новое измерение — Ад:</strong> теперь можно построить портал и отправиться в опасное подземное измерение.</li>
-                <li><strong>Новогоднее обновление:</strong> праздничное оформление, зимние декорации и новогодние элементы.</li>
-                <li><strong>Новые блоки:</strong> добавлены новые блоки для строительства и декора.</li>
-                <li><strong>Новый моб:</strong> в игре появился новый моб — будь внимателен при исследовании мира!</li>
-            </ul>
-        </div>
-
-        <h2 class="section-title nether-title">🔥 Как попасть в Ад (v1.1)</h2>
-        <div class="card nether-card">
-            <p style="color: #d0d0d0; margin-bottom: 14px;">
-                Чтобы открыть портал в Ад в версии 1.1, выполни эти шаги:
-            </p>
-            <ol class="nether-steps">
-                <li>Собери или возьми в инвентаре блоки <strong>Обсидиана</strong> и выстрой прямоугольную рамку <strong>4×5 блоков</strong> (с пустым центром 2×3).</li>
-                <li>Возьми в руку <strong>Огниво (зажигалку)</strong>.</li>
-                <li>Активируй огниво по нижнему внутреннему блоку рамки, чтобы зажечь портал, и зайди в него, чтобы попасть в Ад!</li>
-            </ol>
-        </div>
-
-        <div class="card" style="opacity: 0.85;">
-            <div class="card-header">
-                <div class="card-title-group">
-                    <span class="badge badge-old">Прошлая версия</span>
-                    <strong>BLOOKWORLD v1.0</strong>
-                </div>
-            </div>
-            <ul class="update-list">
-                <li>Большой выбор блоков: земля, камень, руды, цветные блоки и блоки ресурсов.</li>
-                <li>Смена дня и ночи с возможностью пропускать ночь с помощью кроватей.</li>
-            </ul>
-        </div>
-
-        <h2 class="section-title">Снапшоты и расписание</h2>
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title-group">
-                    <span class="badge badge-dev">Снапшот</span>
-                </div>
-                <div class="schedule-pill">📅 Каждую пятницу и субботу в 18:00</div>
-            </div>
-
-            <div class="timer-box">
-                <div class="timer-label">До нового снапшота осталось:</div>
-                <div class="timer-grid">
-                    <div class="timer-unit">
-                        <span class="timer-num" id="t-days">00</span>
-                        <span class="timer-text">Дней</span>
-                    </div>
-                    <div class="timer-unit">
-                        <span class="timer-num" id="t-hours">00</span>
-                        <span class="timer-text">Часов</span>
-                    </div>
-                    <div class="timer-unit">
-                        <span class="timer-num" id="t-mins">00</span>
-                        <span class="timer-text">Минут</span>
-                    </div>
-                    <div class="timer-unit">
-                        <span class="timer-num" id="t-secs">00</span>
-                        <span class="timer-text">Секунд</span>
-                    </div>
-                </div>
-            </div>
-
-            <ul class="update-list">
-                <li>Новые блоки, которые вы предлагаете.</li>
-                <li>Новые мобы, которые вы предлагаете.</li>
-            </ul>
-        </div>
-
-        <h2 class="section-title">Написать идею для BLOOKWORLD</h2>
-        <div class="card">
-            <div id="ideaAccountPrompt" style="margin-bottom: 14px;">
-                <p class="active-nick-line" style="margin-bottom: 10px;">
-                    Чтобы отправить идею, создай аккаунт через Google и выбери свой ник:
-                </p>
-                <button type="button" class="btn-google-custom" onclick="startGoogleAuth()">
-                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                    Создать аккаунт через Google
-                </button>
-            </div>
-
-            <p class="active-nick-line" id="ideaNickStatus" style="display: none; margin-bottom: 14px;"></p>
-
-            <form class="idea-form" id="ideaForm" onsubmit="submitIdea(event)">
-                <textarea id="ideaTextInput" class="textarea-field" placeholder="Напиши свою идею для нового блока, моба, механики или обновления..." required></textarea>
-                <button type="submit" class="btn-submit-idea">🚀 Отправить идею</button>
-                <div id="ideaStatus" class="status-msg"></div>
-            </form>
-
-            <a href="https://t.me/BLOOKWORLDbot" target="_blank" class="btn-bot-link">
-                💬 Также можно открыть бота напрямую в Telegram (@BLOOKWORLDbot)
-            </a>
-
-            <div class="recent-ideas">
-                <h4>Последние идеи игроков:</h4>
-                <div id="ideasList"></div>
-            </div>
-        </div>
-
+  <!-- Real Google Sign-In Modal -->
+  <div class="modal-backdrop" id="googleModalBackdrop" role="dialog" aria-modal="true" aria-label="Вход через Google">
+    <div class="modal-dialog narrow" id="googleModalDialog">
+      <button type="button" class="modal-close" id="googleModalCloseBtn" aria-label="Закрыть">&times;</button>
+      <div id="googleModalBody"></div>
     </div>
+  </div>
 
-    <footer>
-        <p><strong>BLOOKWORLD</strong> — создано <strong>kot_lgromanchik's Studio</strong> (2026)</p>
-        <p style="margin-top: 6px;">Прямая ссылка на игру: <a href="https://denis2610kak-lgtm.github.io/effective-computing-machine/" target="_blank">denis2610kak-lgtm.github.io</a></p>
-    </footer>
+  <!-- Screenshot Lightbox -->
+  <div class="lightbox-backdrop" id="lightboxBackdrop" role="dialog" aria-modal="true" aria-label="Просмотр скриншота">
+    <div class="lightbox-box">
+      <button type="button" class="lightbox-close" id="lightboxCloseBtn" aria-label="Закрыть скриншот">&times;</button>
+      <div class="lightbox-stage" id="lightboxStage"></div>
+    </div>
+  </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
-        import { getDatabase, ref, set, get, push, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-database.js";
+  <script>
+    const GOOGLE_CLIENT_ID = "290497080823-77a8vq34o2ngmk5q63utbv0ldml5sdjc.apps.googleusercontent.com";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC1M9kLfIn7GLDcWamxR5K_EcFi_sNuZkQ",
-            authDomain: "gamestop-fad50.firebaseapp.com",
-            databaseURL: "https://gamestop-fad50-default-rtdb.firebaseio.com",
-            projectId: "gamestop-fad50",
-            storageBucket: "gamestop-fad50.firebasestorage.app",
-            messagingSenderId: "710877966087",
-            appId: "1:710877966087:web:81f237f5ac845b2f8e1fa2",
-            measurementId: "G-BH7XX7DVKN"
+    const CATEGORIES = [
+      "Все категории"
+    ];
+
+    const PC_GAMES = [
+      {
+        id: "minecraft",
+        title: "Minecraft",
+        developer: "kot_lgromanchik's Studio",
+        category: "Игры",
+        stars: 5,
+        ratingNum: 4.9,
+        version: "v1.21",
+        isNew: true,
+        isTop: true,
+        essential: true,
+        platform: "Windows 10/11 (64-bit)",
+        downloadUrl: "https://denis2610kak-lgtm.github.io/effective-computing-machine/",
+        fileName: "Minecraft_Setup_v1.21.exe",
+        shortDesc: "Песочница с выживанием, строительством и исследованием миров.",
+        description: "Исследуйте мир, добывайте ресурсы, стройте постройки и выживайте в одиночку или с друзьями.",
+        screenshots: ["castle", "wooden-bridge", "overworld-hills"],
+        defaultReviews: []
+      }
+    ];
+
+    const REVIEWS_KEY = "kot_lgromanchik_gp_reviews_v1";
+    const REAL_GOOGLE_USER_KEY = "kot_lgromanchik_real_google_user_v1";
+    const NICK_DRAFT_KEY = "kot_lgromanchik_google_nick_v1";
+
+    let pendingGameIdAfterAuth = null;
+
+    const state = {
+      tab: "home",
+      category: "Все категории",
+      search: "",
+      sidebarFilter: "store",
+      expandedAll: false,
+      activeGameId: null,
+      dlInterval: null
+    };
+
+    function readJson(key, fallback) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      } catch {
+        return fallback;
+      }
+    }
+
+    function writeJson(key, val) {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch {}
+    }
+
+    function normalizeNick(raw) {
+      const cleaned = String(raw || "").trim().replace(/^@+/, "").replace(/\s+/g, "_").slice(0, 24);
+      return cleaned ? `@${cleaned}` : "";
+    }
+
+    function getSavedNick() {
+      try {
+        return localStorage.getItem(NICK_DRAFT_KEY) || "";
+      } catch {
+        return "";
+      }
+    }
+
+    function setSavedNick(nick) {
+      try {
+        const formatted = normalizeNick(nick);
+        if (formatted) localStorage.setItem(NICK_DRAFT_KEY, formatted);
+        else localStorage.removeItem(NICK_DRAFT_KEY);
+      } catch {}
+    }
+
+    function getGoogleUser() {
+      const user = readJson(REAL_GOOGLE_USER_KEY, null);
+      if (!user) return null;
+      const savedNick = getSavedNick();
+      return {
+        ...user,
+        nickname: user.nickname || savedNick || ""
+      };
+    }
+
+    function setGoogleUser(user) {
+      writeJson(REAL_GOOGLE_USER_KEY, user);
+      if (user && user.nickname) {
+        setSavedNick(user.nickname);
+      }
+      if (window.__fbStore && typeof window.__fbStore.saveUser === "function" && user) {
+        window.__fbStore.saveUser(user);
+      }
+    }
+
+    function clearGoogleUser() {
+      try {
+        localStorage.removeItem(REAL_GOOGLE_USER_KEY);
+      } catch {}
+    }
+
+    function decodeJwtPayload(credential) {
+      const parts = String(credential || "").split(".");
+      if (parts.length !== 3) return null;
+      const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+      const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+      const binary = atob(padded);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const jsonStr = new TextDecoder("utf-8").decode(bytes);
+      return JSON.parse(jsonStr);
+    }
+
+    function handleGoogleCredentialResponse(response) {
+      if (!response || !response.credential) return;
+      try {
+        const payload = decodeJwtPayload(response.credential);
+        if (!payload) return;
+        const nickInput = document.getElementById("googleNickCreateInput");
+        const typedNick = nickInput ? normalizeNick(nickInput.value) : getSavedNick();
+        const user = {
+          name: payload.name || payload.email || "Google User",
+          email: payload.email || "",
+          picture: payload.picture || "",
+          nickname: typedNick
         };
-
-        const app = initializeApp(firebaseConfig);
-        try { getAnalytics(app); } catch (e) {}
-        const db = getDatabase(app);
-
-        window.fbSaveNickname = async function(userId, nickname) {
-            if (!userId || !nickname) return;
-            await set(ref(db, `users/${userId}`), {
-                nickname: nickname,
-                updatedAt: Date.now()
-            });
-        };
-
-        window.fbLoadNickname = async function(userId) {
-            if (!userId) return "";
-            const snap = await get(ref(db, `users/${userId}/nickname`));
-            return snap.exists() ? snap.val() : "";
-        };
-
-        window.fbSaveIdea = async function(nick, text, timeStr) {
-            const newIdeaRef = push(ref(db, "ideas"));
-            await set(newIdeaRef, {
-                nick: nick,
-                text: text,
-                time: timeStr,
-                createdAt: Date.now()
-            });
-        };
-
-        const ideasQuery = query(ref(db, "ideas"), limitToLast(15));
-        onValue(ideasQuery, (snapshot) => {
-            const list = [];
-            snapshot.forEach((child) => {
-                list.push(child.val());
-            });
-            list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-            window.renderIdeasList(list);
-        });
-    </script>
-
-    <script>
-        const GOOGLE_CLIENT_ID = "309033937419-m2ainidpqc38qkp623820rs1o10g2u95.apps.googleusercontent.com";
-        const BOT_TOKEN = "9035187158:AAECGEtKAgVb3TpAOKDYuHRW4K2AH4UNBBw";
-        const GROUP_CHAT_ID = -1004429681885;
-        let googleInitialized = false;
-
-        function decodeJwtPayload(token) {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split('')
-                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                    .join('')
-            );
-            return JSON.parse(jsonPayload);
+        setGoogleUser(user);
+        syncHeaderAccount();
+        const targetGame = pendingGameIdAfterAuth;
+        pendingGameIdAfterAuth = null;
+        closeGoogleAuthModal();
+        if (targetGame) {
+          openModal(targetGame, false);
+        } else if (state.activeGameId) {
+          openModal(state.activeGameId, false);
         }
+      } catch (err) {
+        console.error("Google credential decode error:", err);
+      }
+    }
 
-        async function handleGoogleCredentialResponse(response) {
-            try {
-                const payload = decodeJwtPayload(response.credential);
-                let savedNick = localStorage.getItem("bw_nick_" + payload.sub) || "";
-                if (window.fbLoadNickname) {
-                    const dbNick = await window.fbLoadNickname(payload.sub);
-                    if (dbNick) savedNick = dbNick;
-                }
-                const profile = {
-                    sub: payload.sub,
-                    nickname: savedNick
-                };
-                localStorage.setItem("bw_google_user", JSON.stringify(profile));
-                renderAuthState();
-                if (!savedNick) {
-                    openNickModal();
-                }
-            } catch (err) {
-                console.error("Ошибка входа через Google:", err);
-            }
+    function initGoogleIdentityServices() {
+      if (!window.google || !window.google.accounts || !window.google.accounts.id) return false;
+      if (!GOOGLE_CLIENT_ID) return false;
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredentialResponse
+      });
+      return true;
+    }
+
+    function renderAvatarHtml(userOrName, sizeClass = "user-avatar-circle") {
+      if (typeof userOrName === "object" && userOrName) {
+        const initial = String(userOrName.nickname || userOrName.name || userOrName.email || "G").replace(/^@/, "").charAt(0).toUpperCase() || "G";
+        if (userOrName.picture) {
+          return `<span class="${sizeClass}"><img src="${escapeHtml(userOrName.picture)}" alt="" referrerpolicy="no-referrer" /></span>`;
         }
+        return `<span class="${sizeClass}">${escapeHtml(initial)}</span>`;
+      }
+      const initial = String(userOrName || "G").replace(/^@/, "").charAt(0).toUpperCase() || "G";
+      return `<span class="${sizeClass}">${escapeHtml(initial)}</span>`;
+    }
 
-        function initGoogleSignIn() {
-            if (googleInitialized) return true;
-            if (window.google && google.accounts && google.accounts.id) {
-                google.accounts.id.initialize({
-                    client_id: GOOGLE_CLIENT_ID,
-                    callback: handleGoogleCredentialResponse
-                });
-                const container = document.getElementById("googleBtnContainer");
-                if (container && container.childElementCount === 0) {
-                    google.accounts.id.renderButton(container, {
-                        theme: "outline",
-                        size: "medium",
-                        text: "signup_with",
-                        shape: "rectangular"
-                    });
-                }
-                googleInitialized = true;
-                return true;
-            }
-            return false;
-        }
+    function syncHeaderAccount() {
+      const user = getGoogleUser();
+      const btn = document.getElementById("headerGoogleBtn");
+      if (!btn) return;
+      if (user && (user.name || user.email)) {
+        const displayName = user.nickname || user.name || user.email;
+        btn.innerHTML = `
+          ${renderAvatarHtml(user, "user-avatar-circle")}
+          <span>${escapeHtml(displayName)}</span>
+        `;
+        btn.title = `${user.name || ""} ${user.nickname ? `(${user.nickname})` : ""} — ${user.email}`.trim();
+      } else {
+        btn.innerHTML = `
+          <span class="user-avatar-circle" id="headerAvatarCircle">G</span>
+          <span id="headerGoogleLabel">Войти через Google</span>
+        `;
+        btn.title = "Войти через Google";
+      }
+    }
 
-        function startGoogleAuth() {
-            const ready = initGoogleSignIn();
-            if (ready && window.google && google.accounts && google.accounts.id) {
-                google.accounts.id.prompt((notification) => {
-                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                        createFallbackAccount();
-                    }
-                });
-            } else {
-                createFallbackAccount();
-            }
-        }
+    function openGoogleAuthModal(gameIdAfter = null) {
+      pendingGameIdAfterAuth = gameIdAfter;
+      const user = getGoogleUser();
+      const body = document.getElementById("googleModalBody");
 
-        function createFallbackAccount() {
-            const existing = localStorage.getItem("bw_google_user");
-            if (!existing) {
-                const profile = {
-                    sub: "google_" + Date.now(),
-                    nickname: ""
-                };
-                localStorage.setItem("bw_google_user", JSON.stringify(profile));
-            }
-            renderAuthState();
-            openNickModal();
-        }
+      if (user && (user.name || user.email)) {
+        body.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-right:32px;">
+            ${renderAvatarHtml(user, "user-avatar-circle")}
+            <div>
+              <h2 style="font-size:17px;font-weight:500;color:#212121;">${escapeHtml(user.name || user.email)}</h2>
+              <div style="font-size:12px;color:var(--text-muted);">${escapeHtml(user.email || "")}</div>
+            </div>
+          </div>
 
-        function renderAuthState() {
-            const raw = localStorage.getItem("bw_google_user");
-            const loggedOutEl = document.getElementById("authLoggedOut");
-            const loggedInEl = document.getElementById("authLoggedIn");
-            const promptEl = document.getElementById("ideaAccountPrompt");
-            const nickStatusEl = document.getElementById("ideaNickStatus");
+          <div style="margin-bottom:14px;">
+            <label for="googleNickEditInput" style="display:block;font-size:12px;color:#424242;margin-bottom:5px;">Ваш ник</label>
+            <div class="nick-create-row" style="margin-top:0;">
+              <input
+                type="text"
+                class="ctrl-input"
+                id="googleNickEditInput"
+                placeholder="Например, lgromanchik"
+                value="${escapeHtml((user.nickname || "").replace(/^@/, ""))}"
+                maxlength="24"
+              />
+              <button type="button" class="btn-green" id="saveNickBtn">Сохранить ник</button>
+            </div>
+          </div>
 
-            if (raw) {
-                const user = JSON.parse(raw);
-                const displayNick = user.nickname || "Без ника";
-                loggedOutEl.style.display = "none";
-                loggedInEl.style.display = "flex";
-                document.getElementById("userNickname").textContent = displayNick;
+          <button type="button" class="btn-outline-sm" id="realGoogleSignOutBtn">Выйти из аккаунта</button>
+        `;
 
-                promptEl.style.display = "none";
-                nickStatusEl.style.display = "block";
-                nickStatusEl.innerHTML = `Отправка от ника: <strong>${escapeHtml(displayNick)}</strong>`;
-            } else {
-                loggedOutEl.style.display = "flex";
-                loggedInEl.style.display = "none";
-
-                promptEl.style.display = "block";
-                nickStatusEl.style.display = "none";
-            }
-        }
-
-        function logoutGoogle() {
-            localStorage.removeItem("bw_google_user");
-            if (window.google && google.accounts && google.accounts.id) {
-                google.accounts.id.disableAutoSelect();
-            }
-            renderAuthState();
-        }
-
-        function openNickModal() {
-            const raw = localStorage.getItem("bw_google_user");
-            if (!raw) return;
-            const user = JSON.parse(raw);
-            document.getElementById("nickInput").value = user.nickname || "";
-            document.getElementById("nickModal").style.display = "flex";
-        }
-
-        async function saveNickname() {
-            const newNick = document.getElementById("nickInput").value.trim();
-            if (newNick.length < 2) {
-                alert("Ник должен быть не короче 2 символов!");
-                return;
-            }
-            const raw = localStorage.getItem("bw_google_user");
-            if (!raw) return;
-            const user = JSON.parse(raw);
-            user.nickname = newNick;
-            localStorage.setItem("bw_google_user", JSON.stringify(user));
-            if (user.sub) {
-                localStorage.setItem("bw_nick_" + user.sub, newNick);
-                if (window.fbSaveNickname) {
-                    try { await window.fbSaveNickname(user.sub, newNick); } catch (e) {}
-                }
-            }
-            document.getElementById("nickModal").style.display = "none";
-            renderAuthState();
-        }
-
-        async function submitIdea(event) {
-            event.preventDefault();
-            const statusEl = document.getElementById("ideaStatus");
-            const rawUser = localStorage.getItem("bw_google_user");
-
-            if (!rawUser) {
-                statusEl.className = "status-msg status-warn";
-                statusEl.textContent = "⚠️ Сначала нажми «Создать аккаунт через Google»!";
-                startGoogleAuth();
-                return;
-            }
-
-            const user = JSON.parse(rawUser);
-            if (!user.nickname) {
-                openNickModal();
-                return;
-            }
-
-            const nick = user.nickname;
-            const text = document.getElementById("ideaTextInput").value.trim();
-            if (!text) return;
-
-            const timeStr = new Date().toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
-            const telegramText = `💡 Новая идея с сайта BLOOKWORLD v1.1!\n\n🎮 Ник: ${nick}\n💬 Идея: ${text}`;
-
-            saveLocalIdea(nick, text, timeStr);
-            if (window.fbSaveIdea) {
-                try { await window.fbSaveIdea(nick, text, timeStr); } catch (e) {}
-            }
-            document.getElementById("ideaTextInput").value = "";
-
-            try {
-                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        chat_id: GROUP_CHAT_ID,
-                        text: telegramText
-                    })
-                });
-                const data = await res.json();
-                if (data.ok) {
-                    statusEl.className = "status-msg status-success";
-                    statusEl.textContent = "✅ Идея сохранена в Firebase и отправлена в группу Telegram!";
-                    return;
-                }
-            } catch (e) {}
-
-            statusEl.className = "status-msg status-warn";
-            statusEl.innerHTML = `✅ Идея сохранена в Firebase! Чтобы отправить её через бота напрямую, нажмите: <a href="https://t.me/BLOOKWORLDbot?text=${encodeURIComponent(text)}" target="_blank" style="color: #fff; text-decoration: underline;">отправить в @BLOOKWORLDbot</a>`;
-        }
-
-        function saveLocalIdea(nick, text, timeStr) {
-            const ideas = JSON.parse(localStorage.getItem("bw_ideas_list") || "[]");
-            ideas.unshift({ nick, text, time: timeStr });
-            localStorage.setItem("bw_ideas_list", JSON.stringify(ideas.slice(0, 15)));
-            renderIdeasList(ideas);
-        }
-
-        window.renderIdeasList = function(customList) {
-            const listEl = document.getElementById("ideasList");
-            const ideas = Array.isArray(customList)
-                ? customList
-                : JSON.parse(localStorage.getItem("bw_ideas_list") || "[]");
-
-            if (!ideas || ideas.length === 0) {
-                listEl.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Пока идей нет — напиши первую!</p>`;
-                return;
-            }
-            listEl.innerHTML = ideas.map(item => `
-                <div class="idea-item">
-                    <div class="idea-meta">🎮 ${escapeHtml(item.nick || "Игрок")} • ${escapeHtml(item.time || "")}</div>
-                    <div class="idea-text">${escapeHtml(item.text || "")}</div>
-                </div>
-            `).join("");
-        };
-
-        function escapeHtml(str) {
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;");
-        }
-
-        function copyGameLink() {
-            const url = "https://denis2610kak-lgtm.github.io/effective-computing-machine/";
-            navigator.clipboard.writeText(url).then(() => {
-                const btn = document.getElementById("copyBtn");
-                btn.textContent = "✅ Скопировано!";
-                setTimeout(() => {
-                    btn.textContent = "📋 Ссылка на игру";
-                }, 2000);
-            });
-        }
-
-        function updateSnapshotTimer() {
-            const now = new Date();
-            const targetDays = [5, 6];
-            let nearestTarget = null;
-
-            targetDays.forEach(day => {
-                const candidate = new Date(now);
-                const daysUntil = (day - now.getDay() + 7) % 7;
-                candidate.setDate(now.getDate() + daysUntil);
-                candidate.setHours(18, 0, 0, 0);
-
-                if (candidate <= now) {
-                    candidate.setDate(candidate.getDate() + 7);
-                }
-
-                if (!nearestTarget || candidate < nearestTarget) {
-                    nearestTarget = candidate;
-                }
-            });
-
-            const diff = nearestTarget - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const mins = Math.floor((diff / 1000 / 60) % 60);
-            const secs = Math.floor((diff / 1000) % 60);
-
-            document.getElementById("t-days").textContent = String(days).padStart(2, "0");
-            document.getElementById("t-hours").textContent = String(hours).padStart(2, "0");
-            document.getElementById("t-mins").textContent = String(mins).padStart(2, "0");
-            document.getElementById("t-secs").textContent = String(secs).padStart(2, "0");
-        }
-
-        window.addEventListener("load", () => {
-            renderAuthState();
-            renderIdeasList();
-            initGoogleSignIn();
+        document.getElementById("saveNickBtn").addEventListener("click", () => {
+          const raw = document.getElementById("googleNickEditInput").value;
+          const formatted = normalizeNick(raw);
+          setSavedNick(formatted);
+          setGoogleUser({ ...user, nickname: formatted });
+          syncHeaderAccount();
+          closeGoogleAuthModal();
+          if (state.activeGameId) openModal(state.activeGameId, false);
         });
 
-        setInterval(updateSnapshotTimer, 1000);
-        updateSnapshotTimer();
-    </script>
+        document.getElementById("realGoogleSignOutBtn").addEventListener("click", () => {
+          clearGoogleUser();
+          if (window.google && window.google.accounts && window.google.accounts.id) {
+            window.google.accounts.id.disableAutoSelect();
+          }
+          syncHeaderAccount();
+          closeGoogleAuthModal();
+          if (state.activeGameId) openModal(state.activeGameId, false);
+        });
+      } else {
+        body.innerHTML = `
+          <h2 style="font-size:18px;font-weight:500;color:#212121;margin-bottom:8px;padding-right:32px;">Создать аккаунт через Google</h2>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">
+            Придумайте ник и войдите через свой Google-аккаунт.
+          </p>
+          <div style="margin-bottom:8px;">
+            <label for="googleNickCreateInput" style="display:block;font-size:12px;color:#424242;margin-bottom:4px;">Ник для аккаунта</label>
+            <input
+              type="text"
+              class="ctrl-input"
+              style="width:100%;"
+              id="googleNickCreateInput"
+              placeholder="Например, kot_lgromanchik"
+              value="${escapeHtml(getSavedNick().replace(/^@/, ""))}"
+              maxlength="24"
+            />
+          </div>
+          <div class="gsi-slot-center" id="gsiButtonContainer"></div>
+        `;
 
+        const nickInput = document.getElementById("googleNickCreateInput");
+        nickInput.addEventListener("input", () => {
+          setSavedNick(nickInput.value);
+        });
+
+        const tryRenderGsi = () => {
+          const container = document.getElementById("gsiButtonContainer");
+          if (!container) return;
+          if (initGoogleIdentityServices()) {
+            window.google.accounts.id.renderButton(container, {
+              theme: "outline",
+              size: "large",
+              text: "signup_with",
+              shape: "rectangular",
+              locale: "ru"
+            });
+          }
+        };
+
+        tryRenderGsi();
+        setTimeout(tryRenderGsi, 250);
+        setTimeout(tryRenderGsi, 800);
+      }
+
+      document.getElementById("googleModalBackdrop").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeGoogleAuthModal() {
+      document.getElementById("googleModalBackdrop").classList.remove("open");
+      if (!document.getElementById("modalBackdrop").classList.contains("open")) {
+        document.body.style.overflow = "";
+      }
+    }
+
+    function getReviews(game) {
+      const all = readJson(REVIEWS_KEY, {});
+      return [...(all[game.id] || []), ...(game.defaultReviews || [])];
+    }
+
+    function renderIconSvg(game, salt = "card") {
+      const uid = `gp-icon-${game.id}-${salt}`;
+      return `
+        <svg viewBox="0 0 128 128" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="${uid}-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#4fc3f7"/>
+              <stop offset="62%" stop-color="#b3e5fc"/>
+              <stop offset="100%" stop-color="#e8f5e9"/>
+            </linearGradient>
+          </defs>
+          <rect width="128" height="128" fill="url(#${uid}-sky)"/>
+          <rect x="0" y="72" width="128" height="56" fill="#689f38"/>
+          <rect x="0" y="84" width="128" height="44" fill="#558b2f"/>
+          <rect x="0" y="96" width="128" height="32" fill="#795548"/>
+          <rect x="0" y="72" width="16" height="14" fill="#7cb342"/>
+          <rect x="16" y="76" width="16" height="14" fill="#689f38"/>
+          <rect x="96" y="74" width="16" height="14" fill="#7cb342"/>
+          <rect x="112" y="70" width="16" height="14" fill="#8bc34a"/>
+          <rect x="26" y="54" width="22" height="24" fill="#43a047" stroke="#1b5e20" stroke-width="1.5"/>
+          <rect x="30" y="60" width="5" height="5" fill="#1b1b1b"/>
+          <rect x="39" y="60" width="5" height="5" fill="#1b1b1b"/>
+          <rect x="35" y="65" width="4" height="5" fill="#1b1b1b"/>
+          <rect x="32" y="68" width="10" height="5" fill="#1b1b1b"/>
+          <rect x="74" y="48" width="22" height="22" fill="#ffcc80" stroke="#8d6e63" stroke-width="1.5"/>
+          <rect x="74" y="46" width="22" height="7" fill="#4e342e"/>
+          <rect x="78" y="57" width="4" height="3" fill="#212121"/>
+          <rect x="88" y="57" width="4" height="3" fill="#212121"/>
+          <rect x="72" y="70" width="26" height="18" fill="#00acc1" stroke="#006064" stroke-width="1.5"/>
+          <rect x="8" y="12" width="112" height="22" rx="4" fill="#263238" opacity="0.9"/>
+          <text x="64" y="27" text-anchor="middle" fill="#ffffff" font-family="Roboto, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2">MINECRAFT</text>
+        </svg>
+      `;
+    }
+
+    function renderScreenshotSvg(sceneKey, salt = "thumb") {
+      const uid = `gp-scr-${sceneKey}-${salt}`;
+      if (sceneKey === "wooden-bridge") {
+        return `
+          <svg viewBox="0 0 320 180" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="180" fill="#263238"/>
+            <rect x="0" y="96" width="320" height="84" fill="#4e342e"/>
+            <rect x="0" y="96" width="320" height="14" fill="#558b2f"/>
+            <rect x="20" y="54" width="280" height="14" fill="#a1887f" stroke="#5d4037" stroke-width="1.5"/>
+            <rect x="20" y="68" width="280" height="42" fill="#8d6e63" stroke="#4e342e" stroke-width="1.5"/>
+            <line x1="65" y1="68" x2="65" y2="110" stroke="#4e342e" stroke-width="1.5"/>
+            <line x1="120" y1="68" x2="120" y2="110" stroke="#4e342e" stroke-width="1.5"/>
+            <line x1="180" y1="68" x2="180" y2="110" stroke="#4e342e" stroke-width="1.5"/>
+            <line x1="240" y1="68" x2="240" y2="110" stroke="#4e342e" stroke-width="1.5"/>
+            <rect x="92" y="42" width="10" height="12" fill="#ffb74d"/>
+            <circle cx="97" cy="39" r="6" fill="#ff9800" opacity="0.65"/>
+            <rect x="210" y="42" width="10" height="12" fill="#ffb74d"/>
+            <circle cx="215" cy="39" r="6" fill="#ff9800" opacity="0.65"/>
+          </svg>
+        `;
+      }
+
+      if (sceneKey === "overworld-hills") {
+        return `
+          <svg viewBox="0 0 320 180" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="${uid}-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#42a5f5"/>
+                <stop offset="100%" stop-color="#bbdefb"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="180" fill="url(#${uid}-sky)"/>
+            <rect x="35" y="24" width="52" height="14" fill="#ffffff" opacity="0.9"/>
+            <rect x="195" y="34" width="64" height="14" fill="#ffffff" opacity="0.85"/>
+            <rect x="0" y="96" width="320" height="84" fill="#689f38"/>
+            <rect x="0" y="114" width="320" height="66" fill="#795548"/>
+            <rect x="0" y="114" width="320" height="12" fill="#558b2f"/>
+            <rect x="56" y="76" width="12" height="24" fill="#5d4037"/>
+            <rect x="38" y="46" width="48" height="32" fill="#388e3c"/>
+            <rect x="46" y="36" width="32" height="12" fill="#4caf50"/>
+            <polygon points="155,180 185,180 172,108 162,108" fill="#9e9e9e"/>
+          </svg>
+        `;
+      }
+
+      return `
+        <svg viewBox="0 0 320 180" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="${uid}-dusk" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#3949ab"/>
+              <stop offset="58%" stop-color="#7986cb"/>
+              <stop offset="100%" stop-color="#f48fb1"/>
+            </linearGradient>
+          </defs>
+          <rect width="320" height="180" fill="url(#${uid}-dusk)"/>
+          <rect x="20" y="22" width="48" height="10" fill="#ef9a9a" opacity="0.85"/>
+          <rect x="135" y="28" width="56" height="10" fill="#f8bbd0" opacity="0.85"/>
+          <rect x="0" y="92" width="95" height="88" fill="#1b5e20"/>
+          <rect x="18" y="78" width="28" height="24" fill="#2e7d32"/>
+          <rect x="52" y="82" width="30" height="24" fill="#2e7d32"/>
+          <rect x="185" y="42" width="135" height="138" fill="#8d6e63"/>
+          <rect x="185" y="42" width="135" height="12" fill="#7cb342"/>
+          <rect x="172" y="34" width="46" height="58" fill="#757575" stroke="#424242" stroke-width="1.5"/>
+          <rect x="242" y="88" width="20" height="92" fill="#1e88e5"/>
+          <rect x="246" y="88" width="8" height="92" fill="#64b5f6"/>
+          <rect x="64" y="42" width="52" height="96" fill="#9e9e9e" stroke="#424242" stroke-width="1.5"/>
+          <rect x="60" y="34" width="60" height="12" fill="#bdbdbd" stroke="#424242" stroke-width="1.5"/>
+          <rect x="60" y="26" width="10" height="8" fill="#9e9e9e"/>
+          <rect x="76" y="26" width="10" height="8" fill="#9e9e9e"/>
+          <rect x="92" y="26" width="10" height="8" fill="#9e9e9e"/>
+          <rect x="108" y="26" width="10" height="8" fill="#9e9e9e"/>
+          <rect x="72" y="52" width="8" height="14" fill="#e53935"/>
+          <rect x="100" y="52" width="8" height="14" fill="#e53935"/>
+          <rect x="44" y="74" width="20" height="36" fill="none" stroke="#ffb300" stroke-width="2"/>
+          <line x1="44" y1="83" x2="64" y2="83" stroke="#ffb300" stroke-width="1.5"/>
+          <line x1="44" y1="92" x2="64" y2="92" stroke="#ffb300" stroke-width="1.5"/>
+          <line x1="44" y1="101" x2="64" y2="101" stroke="#ffb300" stroke-width="1.5"/>
+          <rect x="116" y="84" width="96" height="22" fill="#9e9e9e" stroke="#424242" stroke-width="1.5"/>
+          <rect x="136" y="68" width="10" height="16" fill="#ff9800"/>
+          <rect x="138" y="62" width="6" height="8" fill="#ffee58"/>
+          <rect x="184" y="68" width="10" height="16" fill="#ff9800"/>
+          <rect x="186" y="62" width="6" height="8" fill="#ffee58"/>
+          <rect x="0" y="136" width="320" height="44" fill="#558b2f"/>
+          <rect x="126" y="132" width="54" height="48" fill="#bdbdbd"/>
+        </svg>
+      `;
+    }
+
+    function renderStars(count) {
+      let html = "";
+      for (let i = 1; i <= 5; i++) {
+        html += `<span class="${i <= count ? "star-on" : "star-off"}">&#9733;</span>`;
+      }
+      return html;
+    }
+
+    function renderCategoryMenu() {
+      const menu = document.getElementById("categoryMenu");
+      const label = document.getElementById("categoryBtnLabel");
+      label.textContent = state.category === "Все категории" ? "Категории" : state.category;
+
+      menu.innerHTML = CATEGORIES.map((cat) => {
+        const cls = state.category === cat ? "category-menu-item active" : "category-menu-item";
+        return `<button type="button" class="${cls}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`;
+      }).join("");
+
+      menu.querySelectorAll("[data-cat]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.category = btn.dataset.cat;
+          state.sidebarFilter = "store";
+          menu.classList.remove("open");
+          syncSidebarActive();
+          renderCategoryMenu();
+          renderStore();
+        });
+      });
+    }
+
+    function syncSidebarActive() {
+      document.querySelectorAll(".sidebar-item").forEach((item) => {
+        const key = item.dataset.side;
+        item.classList.toggle("active", state.sidebarFilter === key);
+      });
+    }
+
+    function getFilteredGames() {
+      const q = state.search.trim().toLowerCase();
+
+      let list = PC_GAMES.filter((g) => {
+        if (state.category !== "Все категории" && g.category !== state.category) {
+          return false;
+        }
+        if (state.tab === "top" && !g.isTop) return false;
+        if (state.tab === "new" && !g.isNew) return false;
+
+        if (q) {
+          const hay = `${g.title} ${g.developer} ${g.category} ${g.shortDesc}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      if (state.tab === "top") {
+        list = [...list].sort((a, b) => b.ratingNum - a.ratingNum);
+      }
+      return list;
+    }
+
+    function renderCardHtml(game, salt) {
+      return `
+        <article class="app-card" data-game-id="${escapeHtml(game.id)}">
+          <div class="app-cover-box">${renderIconSvg(game, salt)}</div>
+          <div class="app-name" title="${escapeHtml(game.title)}">${escapeHtml(game.title)}</div>
+          <div class="app-dev">${escapeHtml(game.developer)}</div>
+          <div class="app-card-footer">
+            <div class="stars-row" title="Рейтинг ${Number(game.ratingNum || 5).toFixed(1)} из 5">${renderStars(game.stars || 5)}</div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderStore() {
+      const container = document.getElementById("sectionsContainer");
+      const emptyBox = document.getElementById("emptyBox");
+
+      const filtered = getFilteredGames();
+
+      if (filtered.length === 0) {
+        container.innerHTML = "";
+        emptyBox.classList.add("visible");
+        return;
+      }
+
+      emptyBox.classList.remove("visible");
+
+      const visibleGames = state.expandedAll ? filtered : filtered.slice(0, 5);
+
+      container.innerHTML = `
+        <section class="store-section">
+          <div class="section-top">
+            <div>
+              <h2 class="section-heading">Игры</h2>
+            </div>
+            ${!state.expandedAll && filtered.length > 5
+              ? `<button type="button" class="more-btn" id="toggleExpandBtn">Ещё</button>`
+              : state.expandedAll && filtered.length > 5
+                ? `<button type="button" class="more-btn" id="toggleExpandBtn">Свернуть</button>`
+                : ""}
+          </div>
+          <div class="cards-row">
+            ${visibleGames.map((g, idx) => renderCardHtml(g, `games-${idx}`)).join("")}
+          </div>
+        </section>
+      `;
+
+      const toggleBtn = document.getElementById("toggleExpandBtn");
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+          state.expandedAll = !state.expandedAll;
+          renderStore();
+        });
+      }
+
+      container.querySelectorAll("[data-game-id]").forEach((card) => {
+        card.addEventListener("click", () => {
+          openModal(card.dataset.gameId, false);
+        });
+      });
+    }
+
+    function openLightbox(sceneKey) {
+      const stage = document.getElementById("lightboxStage");
+      stage.innerHTML = renderScreenshotSvg(sceneKey, "full");
+      document.getElementById("lightboxBackdrop").classList.add("open");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxBackdrop").classList.remove("open");
+    }
+
+    function openModal(gameId, autoStart) {
+      const game = PC_GAMES.find((g) => g.id === gameId);
+      if (!game) return;
+
+      clearInterval(state.dlInterval);
+      state.activeGameId = game.id;
+
+      const reviews = getReviews(game);
+      const screenshots = game.screenshots || [];
+      const user = getGoogleUser();
+
+      const modalBody = document.getElementById("modalBody");
+      modalBody.innerHTML = `
+        <div class="modal-top">
+          <div class="modal-art">${renderIconSvg(game, "modal")}</div>
+          <div style="flex:1;min-width:0;">
+            <h2 class="modal-title">${escapeHtml(game.title)}</h2>
+            <div class="modal-sub">${escapeHtml(game.developer)}</div>
+            <div class="modal-badges">
+              <span class="badge-chip">${escapeHtml(game.category)}</span>
+              <span class="badge-chip">&#9733; ${Number(game.ratingNum || 5).toFixed(1)}</span>
+              <span class="badge-chip">${escapeHtml(game.version || "v1.0")}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dl-panel">
+          <div class="dl-row">
+            <button type="button" class="btn-green" id="dlStartBtn">Установить на ПК</button>
+            ${game.downloadUrl ? `<a class="btn-outline-sm" href="${escapeHtml(game.downloadUrl)}" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>` : ""}
+          </div>
+
+          <div class="dl-progress" id="dlProgress">
+            <div class="dl-bar-bg"><div class="dl-bar-fill" id="dlBarFill"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);">
+              <span id="dlStatus">Подготовка установщика...</span>
+              <span id="dlPercent">0%</span>
+            </div>
+          </div>
+        </div>
+
+        ${screenshots.length ? `
+          <div class="modal-block">
+            <h3>Скриншоты</h3>
+            <div class="screenshots-strip">
+              ${screenshots.map((sc, idx) => `
+                <div class="screenshot-thumb" data-scene="${escapeHtml(sc)}" title="Нажмите для увеличения">
+                  ${renderScreenshotSvg(sc, `s-${idx}`)}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        ` : ""}
+
+        <div class="modal-block">
+          <h3>Описание</h3>
+          <p style="font-size:13px;color:#424242;">${escapeHtml(game.description)}</p>
+        </div>
+
+        <div class="modal-block">
+          <h3>Отзывы (${reviews.length})</h3>
+          <form class="review-box" id="reviewForm">
+            <div class="review-account-bar">
+              ${user && (user.name || user.email) ? `
+                <div class="review-account-info">
+                  ${renderAvatarHtml(user, "review-mini-avatar")}
+                  <div style="min-width:0;">
+                    <div style="font-size:13px;font-weight:500;color:#212121;">
+                      ${escapeHtml(user.name || user.email)}
+                      ${user.nickname ? `<span class="review-handle">${escapeHtml(user.nickname)}</span>` : ""}
+                    </div>
+                    <div style="font-size:11px;color:var(--text-muted);">${escapeHtml(user.email || "")}</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-outline-sm" id="modalGoogleBtn">Аккаунт и ник</button>
+              ` : `
+                <div class="review-account-info">
+                  <span style="font-size:12px;color:#424242;">Создайте аккаунт через Google и укажите ник, чтобы оставить отзыв</span>
+                </div>
+                <button type="button" class="btn-outline-sm" id="modalGoogleBtn">Войти через Google</button>
+              `}
+            </div>
+
+            <div class="review-controls">
+              <input
+                type="text"
+                class="ctrl-input"
+                id="revNickInput"
+                placeholder="Ник (например, lgromanchik)"
+                value="${escapeHtml((user && user.nickname ? user.nickname : getSavedNick()).replace(/^@/, ""))}"
+                maxlength="24"
+              />
+              <select class="ctrl-select" id="revStars">
+                <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; (5)</option>
+                <option value="4">&#9733;&#9733;&#9733;&#9733; (4)</option>
+                <option value="3">&#9733;&#9733;&#9733; (3)</option>
+                <option value="2">&#9733;&#9733; (2)</option>
+                <option value="1">&#9733; (1)</option>
+              </select>
+            </div>
+            <textarea class="ctrl-textarea" id="revText" placeholder="Оставьте отзыв об игре..." maxlength="300" required></textarea>
+            <div style="display:flex;justify-content:flex-end;">
+              <button type="submit" class="more-btn">Добавить отзыв</button>
+            </div>
+          </form>
+
+          <div>
+            ${reviews.map((r) => `
+              <div class="review-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span class="review-author-wrap">
+                    ${renderAvatarHtml({ name: r.author, email: r.email, picture: r.picture, nickname: r.nickname }, "review-mini-avatar")}
+                    <strong>${escapeHtml(r.author)}</strong>
+                    ${r.nickname ? `<span class="review-handle">${escapeHtml(r.nickname)}</span>` : ""}
+                  </span>
+                  <span>${renderStars(Number(r.rating) || 5)}</span>
+                </div>
+                <div style="color:#555;">${escapeHtml(r.text)}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      document.getElementById("modalBackdrop").classList.add("open");
+      document.body.style.overflow = "hidden";
+
+      const revNickEl = document.getElementById("revNickInput");
+      revNickEl.addEventListener("input", () => {
+        const formatted = normalizeNick(revNickEl.value);
+        setSavedNick(formatted);
+        const current = getGoogleUser();
+        if (current) {
+          setGoogleUser({ ...current, nickname: formatted });
+          syncHeaderAccount();
+        }
+      });
+
+      document.getElementById("modalGoogleBtn").addEventListener("click", () => {
+        openGoogleAuthModal(game.id);
+      });
+
+      modalBody.querySelectorAll("[data-scene]").forEach((thumb) => {
+        thumb.addEventListener("click", () => openLightbox(thumb.dataset.scene));
+      });
+
+      document.getElementById("dlStartBtn").addEventListener("click", () => startGameDownload(game));
+
+      document.getElementById("reviewForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = document.getElementById("revText").value.trim();
+        if (!text) return;
+
+        const formattedNick = normalizeNick(document.getElementById("revNickInput").value);
+        if (formattedNick) {
+          setSavedNick(formattedNick);
+        }
+
+        const currentUser = getGoogleUser();
+        if (!currentUser || (!currentUser.name && !currentUser.email)) {
+          openGoogleAuthModal(game.id);
+          return;
+        }
+
+        const finalNick = formattedNick || currentUser.nickname || "";
+        setGoogleUser({ ...currentUser, nickname: finalNick });
+        syncHeaderAccount();
+
+        const rating = Number(document.getElementById("revStars").value) || 5;
+        const reviewItem = {
+          author: currentUser.name || currentUser.email,
+          nickname: finalNick,
+          email: currentUser.email || "",
+          picture: currentUser.picture || "",
+          rating,
+          text,
+          createdAt: Date.now()
+        };
+
+        const all = readJson(REVIEWS_KEY, {});
+        all[game.id] = [reviewItem, ...(all[game.id] || [])];
+        writeJson(REVIEWS_KEY, all);
+
+        if (window.__fbStore && typeof window.__fbStore.pushReview === "function") {
+          await window.__fbStore.pushReview(game.id, reviewItem);
+        }
+
+        openModal(game.id, false);
+      });
+
+      if (autoStart) {
+        startGameDownload(game);
+      }
+    }
+
+    function startGameDownload(game) {
+      if (game.downloadUrl) {
+        window.open(game.downloadUrl, "_blank", "noopener,noreferrer");
+        return;
+      }
+
+      clearInterval(state.dlInterval);
+      const btn = document.getElementById("dlStartBtn");
+      const wrap = document.getElementById("dlProgress");
+      const fill = document.getElementById("dlBarFill");
+      const statusEl = document.getElementById("dlStatus");
+      const pctEl = document.getElementById("dlPercent");
+      if (!btn || !wrap || !fill || !statusEl || !pctEl) return;
+
+      btn.disabled = true;
+      btn.textContent = "Загрузка...";
+      wrap.classList.add("visible");
+
+      let pct = 0;
+      fill.style.width = "0%";
+      pctEl.textContent = "0%";
+      statusEl.textContent = "Скачивание дистрибутива...";
+
+      state.dlInterval = setInterval(() => {
+        pct += Math.floor(Math.random() * 20) + 12;
+        if (pct >= 100) {
+          pct = 100;
+          clearInterval(state.dlInterval);
+          fill.style.width = "100%";
+          pctEl.textContent = "100%";
+          statusEl.textContent = `Готово: ${game.fileName}`;
+          btn.disabled = false;
+          btn.textContent = "Скачать снова";
+        } else {
+          fill.style.width = `${pct}%`;
+          pctEl.textContent = `${pct}%`;
+        }
+      }, 140);
+    }
+
+    function closeModal() {
+      clearInterval(state.dlInterval);
+      state.activeGameId = null;
+      document.getElementById("modalBackdrop").classList.remove("open");
+      if (!document.getElementById("googleModalBackdrop").classList.contains("open")) {
+        document.body.style.overflow = "";
+      }
+    }
+
+    function resetFilters() {
+      state.tab = "home";
+      state.category = "Все категории";
+      state.search = "";
+      state.sidebarFilter = "store";
+      state.expandedAll = false;
+      document.getElementById("searchInput").value = "";
+      document.querySelectorAll(".subnav-btn[data-tab]").forEach((b) => {
+        b.classList.toggle("active", b.dataset.tab === "home");
+      });
+      syncSidebarActive();
+      renderCategoryMenu();
+      renderStore();
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    const catToggle = document.getElementById("categoryToggleBtn");
+    const catMenu = document.getElementById("categoryMenu");
+
+    catToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      catMenu.classList.toggle("open");
+    });
+
+    document.addEventListener("click", () => catMenu.classList.remove("open"));
+
+    document.querySelectorAll(".subnav-btn[data-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.tab = btn.dataset.tab;
+        state.sidebarFilter = "store";
+        document.querySelectorAll(".subnav-btn[data-tab]").forEach((b) => {
+          b.classList.toggle("active", b === btn);
+        });
+        syncSidebarActive();
+        renderStore();
+      });
+    });
+
+    document.getElementById("collapseSidebarBtn").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("collapsed");
+    });
+
+    document.querySelectorAll(".sidebar-item[data-side]").forEach((item) => {
+      item.addEventListener("click", () => {
+        state.sidebarFilter = item.dataset.side;
+        if (state.sidebarFilter === "store") state.category = "Все категории";
+        renderCategoryMenu();
+        syncSidebarActive();
+        renderStore();
+      });
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      state.search = document.getElementById("searchInput").value;
+      renderStore();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      state.search = e.target.value;
+      renderStore();
+    });
+
+    document.getElementById("emptyResetBtn").addEventListener("click", resetFilters);
+    document.getElementById("homeLogoBtn").addEventListener("click", resetFilters);
+
+    document.getElementById("headerGoogleBtn").addEventListener("click", () => openGoogleAuthModal(null));
+    document.getElementById("googleModalCloseBtn").addEventListener("click", closeGoogleAuthModal);
+    document.getElementById("googleModalBackdrop").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) closeGoogleAuthModal();
+    });
+
+    document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    document.getElementById("lightboxCloseBtn").addEventListener("click", closeLightbox);
+    document.getElementById("lightboxBackdrop").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (document.getElementById("lightboxBackdrop").classList.contains("open")) {
+          closeLightbox();
+        } else if (document.getElementById("googleModalBackdrop").classList.contains("open")) {
+          closeGoogleAuthModal();
+        } else {
+          closeModal();
+        }
+      }
+    });
+
+    window.addEventListener("load", () => {
+      initGoogleIdentityServices();
+    });
+
+    syncHeaderAccount();
+    renderCategoryMenu();
+    syncSidebarActive();
+    renderStore();
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      set,
+      onValue
+    } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDh_L7iJ6R4cD7OGYzC9Jttz0f5Wp-_6tY",
+      authDomain: "store-1f8e6.firebaseapp.com",
+      databaseURL: "https://store-1f8e6-default-rtdb.firebaseio.com",
+      projectId: "store-1f8e6",
+      storageBucket: "store-1f8e6.firebasestorage.app",
+      messagingSenderId: "8911726179",
+      appId: "1:8911726179:web:383d2928885689341ffa56",
+      measurementId: "G-58WTDE9MN8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+
+    function makeUserKey(user) {
+      const raw = String((user && (user.email || user.name || "anon")) || "anon")
+        .replace(/[.#$/[\]]/g, "_");
+      return raw.slice(0, 80) || "anon";
+    }
+
+    async function saveUser(user) {
+      if (!user || (!user.email && !user.name)) return;
+      try {
+        await set(ref(db, `users/${makeUserKey(user)}`), {
+          name: user.name || "",
+          nickname: user.nickname || "",
+          email: user.email || "",
+          updatedAt: Date.now()
+        });
+      } catch (err) {
+        console.warn("Firebase user sync skipped:", err);
+      }
+    }
+
+    async function pushReview(gameId, reviewItem) {
+      try {
+        await push(ref(db, `reviews/${gameId}`), reviewItem);
+      } catch (err) {
+        console.warn("Firebase review push skipped:", err);
+      }
+    }
+
+    window.__fbStore = {
+      app,
+      analytics,
+      db,
+      saveUser,
+      pushReview
+    };
+
+    onValue(ref(db, "reviews"), (snapshot) => {
+      const data = snapshot.val();
+      if (!data || typeof data !== "object") return;
+
+      const mapped = {};
+      for (const [gameId, entries] of Object.entries(data)) {
+        if (!entries || typeof entries !== "object") continue;
+        const list = Object.values(entries)
+          .filter((item) => item && typeof item === "object" && item.text)
+          .sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
+        mapped[gameId] = list;
+      }
+
+      try {
+        localStorage.setItem(REVIEWS_KEY, JSON.stringify(mapped));
+      } catch {}
+
+      if (state.activeGameId && mapped[state.activeGameId]) {
+        const modalOpen = document.getElementById("modalBackdrop")?.classList.contains("open");
+        const revTextFocused = document.activeElement?.id === "revText";
+        const revNickFocused = document.activeElement?.id === "revNickInput";
+        if (modalOpen && !revTextFocused && !revNickFocused) {
+          openModal(state.activeGameId, false);
+        }
+      }
+    }, (err) => {
+      console.warn("Firebase reviews listener error:", err);
+    });
+  </script>
 </body>
 </html>
