@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOOKWORLD — Официальный сайт игры</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        :root {
+            --bg-dark: #101214;
+            --bg-card: #1a1d21;
+            --accent-green: #4caf50;
+            --accent-green-dark: #2e7d32;
+            --accent-green-hover: #57c25b;
+            --accent-orange: #ff9800;
+            --accent-red: #e53935;
+            --text-main: #ffffff;
+            --text-muted: #9aa0a6;
+            --border-color: #2c3138;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .top-bar {
+            background-color: #15181c;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .brand-mini {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .brand-mini span {
+            color: var(--accent-green);
+        }
+
+        .user-panel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-google-custom {
+            background-color: #ffffff;
+            color: #1f1f1f;
+            border: none;
+            padding: 9px 16px;
+            font-size: 0.92rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn-google-custom:hover {
+            opacity: 0.92;
+        }
+
+        .btn-google-custom:active {
+            transform: scale(0.98);
+        }
+
+        .nick-pill {
+            background-color: #23272c;
+            border: 1px solid var(--accent-green);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .nick-pill strong {
+            color: var(--accent-green);
+        }
+
+        .btn-small {
+            background-color: #2c3138;
+            color: #fff;
+            border: 1px solid #3c424b;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .btn-small:hover {
+            border-color: var(--accent-green);
+        }
+
+        .btn-logout {
+            background-color: rgba(229, 57, 53, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(229, 57, 53, 0.4);
+        }
+
+        header {
+            background: radial-gradient(circle at top, #1f4222 0%, #101214 80%);
+            padding: 45px 20px 40px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-green);
+        }
+
+        .logo-blocks {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .block-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.3);
+        }
+
+        .b-grass { background: linear-gradient(to bottom, #4caf50 35%, #795548 35%); }
+        .b-stone { background-color: #757575; }
+        .b-gold { background-color: #ffc107; }
+        .b-nether { background-color: #b71c1c; }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 0 #000;
+        }
+
+        header h1 span {
+            color: var(--accent-green);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 28px;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-play {
+            display: inline-block;
+            background-color: var(--accent-green);
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: 16px 44px;
+            border-radius: 8px;
+            border-bottom: 5px solid var(--accent-green-dark);
+            transition: transform 0.1s, background-color 0.2s;
+            letter-spacing: 1px;
+        }
+
+        .btn-play:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        .btn-play:active {
+            transform: translateY(3px);
+            border-bottom: 2px solid var(--accent-green-dark);
+        }
+
+        .btn-share {
+            background-color: #23272c;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 16px 22px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .btn-share:hover {
+            background-color: #2c3138;
+            border-color: var(--accent-green);
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent-green);
+            padding-left: 12px;
+        }
+
+        .section-title.nether-title {
+            border-left-color: var(--accent-red);
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 28px;
+        }
+
+        .card.nether-card {
+            border-color: rgba(229, 57, 53, 0.4);
+            background: linear-gradient(145deg, #1a1d21 0%, #241517 100%);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--accent-green);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 9px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-new {
+            background-color: #ff5722;
+        }
+
+        .badge-old {
+            background-color: #455a64;
+        }
+
+        .badge-dev {
+            background-color: var(--accent-orange);
+            color: #101214;
+        }
+
+        .schedule-pill {
+            background-color: rgba(255, 152, 0, 0.12);
+            color: var(--accent-orange);
+            border: 1px solid rgba(255, 152, 0, 0.35);
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .timer-box {
+            background-color: #121417;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .timer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timer-unit {
+            background-color: #1a1d21;
+            border: 1px solid #2f353d;
+            border-radius: 6px;
+            padding: 8px 14px;
+            min-width: 72px;
+        }
+
+        .timer-num {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent-orange);
+            font-family: monospace;
+            line-height: 1.2;
+        }
+
+        .timer-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .update-list {
+            list-style: none;
+        }
+
+        .update-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            color: #e0e0e0;
+        }
+
+        .update-list li::before {
+            content: "■";
+            color: var(--accent-green);
+            position: absolute;
+            left: 0;
+            font-size: 0.9rem;
+            top: 2px;
+        }
+
+        .nether-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .nether-steps li {
+            counter-increment: step-counter;
+            margin-bottom: 12px;
+            padding-left: 34px;
+            position: relative;
+            color: #f0f0f0;
+        }
+
+        .nether-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 1px;
+            width: 22px;
+            height: 22px;
+            background-color: var(--accent-red);
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.85rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .idea-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .active-nick-line {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .active-nick-line strong {
+            color: var(--accent-green);
+        }
+
+        .input-field, .textarea-field {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #121417;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus, .textarea-field:focus {
+            border-color: var(--accent-green);
+        }
+
+        .textarea-field {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .btn-submit-idea {
+            background-color: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit-idea:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        .status-msg {
+            font-size: 0.9rem;
+            padding: 10px 12px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .status-success {
+            display: block;
+            background-color: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.4);
+            color: #81c784;
+        }
+
+        .status-warn {
+            display: block;
+            background-color: rgba(255, 152, 0, 0.15);
+            border: 1px solid rgba(255, 152, 0, 0.4);
+            color: #ffb74d;
+        }
+
+        .recent-ideas {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .recent-ideas h4 {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .idea-item {
+            background-color: #121417;
+            border: 1px solid #252a30;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+        }
+
+        .idea-meta {
+            font-size: 0.8rem;
+            color: var(--accent-green);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .idea-text {
+            font-size: 0.95rem;
+            color: #e6e6e6;
+        }
+
+        .btn-bot-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--accent-green);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .btn-bot-link:hover {
+            text-decoration: underline;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .modal-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--accent-green);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="brand-mini">BLOOK<span>WORLD</span> • v1.1</div>
+
+        <div class="user-panel" id="authLoggedOut">
+            <button type="button" class="btn-google-custom" onclick="startGoogleAuth()">
+                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                Создать аккаунт / Войти через Google
+            </button>
+            <div id="googleBtnContainer"></div>
+        </div>
+
+        <div class="user-panel" id="authLoggedIn" style="display: none;">
+            <div class="nick-pill">Ник: <strong id="userNickname">Игрок</strong></div>
+            <button type="button" class="btn-small" onclick="openNickModal()">✏️ Сменить ник</button>
+            <button type="button" class="btn-small btn-logout" onclick="logoutGoogle()">Выйти</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="nickModal">
+        <div class="modal-box">
+            <h3>🎮 Введи свой ник</h3>
+            <p>Ник сохраняется в базе Firebase и отображается на сайте</p>
+            <input type="text" id="nickInput" class="input-field" style="margin-bottom: 14px;" placeholder="Например: Kot_Igromanchik" maxlength="20">
+            <button type="button" class="btn-submit-idea" style="width: 100%;" onclick="saveNickname()">Сохранить ник</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo-blocks">
+            <div class="block-icon b-grass"></div>
+            <div class="block-icon b-stone"></div>
+            <div class="block-icon b-gold"></div>
+            <div class="block-icon b-nether"></div>
+        </div>
+        <h1>BLOOK<span>WORLD</span></h1>
+        <p>Строй, исследуй и создавай свой мир прямо в браузере</p>
+        <div class="header-buttons">
+            <a href="https://denis2610kak-lgtm.github.io/effective-computing-machine/" target="_blank" class="btn-play">▶ ИГРАТЬ В BLOOKWORLD</a>
+            <button type="button" class="btn-share" id="copyBtn" onclick="copyGameLink()">📋 Ссылка на игру</button>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <h2 class="section-title">Что нового в текущей версии</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title-group">
+                    <span class="badge badge-new">Новое • Актуально</span>
+                    <strong>BLOOKWORLD v1.1 — Новогоднее и Адское обновление</strong>
+                </div>
+            </div>
+            <ul class="update-list">
+                <li><strong>Новое измерение — Ад:</strong> теперь можно построить портал и отправиться в опасное подземное измерение.</li>
+                <li><strong>Новогоднее обновление:</strong> праздничное оформление, зимние декорации и новогодние элементы.</li>
+                <li><strong>Новые блоки:</strong> добавлены новые блоки для строительства и декора.</li>
+                <li><strong>Новый моб:</strong> в игре появился новый моб — будь внимателен при исследовании мира!</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title nether-title">🔥 Как попасть в Ад (v1.1)</h2>
+        <div class="card nether-card">
+            <p style="color: #d0d0d0; margin-bottom: 14px;">
+                Чтобы открыть портал в Ад в версии 1.1, выполни эти шаги:
+            </p>
+            <ol class="nether-steps">
+                <li>Собери или возьми в инвентаре блоки <strong>Обсидиана</strong> и выстрой прямоугольную рамку <strong>4×5 блоков</strong> (с пустым центром 2×3).</li>
+                <li>Возьми в руку <strong>Огниво (зажигалку)</strong>.</li>
+                <li>Активируй огниво по нижнему внутреннему блоку рамки, чтобы зажечь портал, и зайди в него, чтобы попасть в Ад!</li>
+            </ol>
+        </div>
+
+        <div class="card" style="opacity: 0.85;">
+            <div class="card-header">
+                <div class="card-title-group">
+                    <span class="badge badge-old">Прошлая версия</span>
+                    <strong>BLOOKWORLD v1.0</strong>
+                </div>
+            </div>
+            <ul class="update-list">
+                <li>Большой выбор блоков: земля, камень, руды, цветные блоки и блоки ресурсов.</li>
+                <li>Смена дня и ночи с возможностью пропускать ночь с помощью кроватей.</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">Снапшоты и расписание</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title-group">
+                    <span class="badge badge-dev">Снапшот</span>
+                </div>
+                <div class="schedule-pill">📅 Каждую пятницу и субботу в 18:00</div>
+            </div>
+
+            <div class="timer-box">
+                <div class="timer-label">До нового снапшота осталось:</div>
+                <div class="timer-grid">
+                    <div class="timer-unit">
+                        <span class="timer-num" id="t-days">00</span>
+                        <span class="timer-text">Дней</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-num" id="t-hours">00</span>
+                        <span class="timer-text">Часов</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-num" id="t-mins">00</span>
+                        <span class="timer-text">Минут</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-num" id="t-secs">00</span>
+                        <span class="timer-text">Секунд</span>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="update-list">
+                <li>Новые блоки, которые вы предлагаете.</li>
+                <li>Новые мобы, которые вы предлагаете.</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">Написать идею для BLOOKWORLD</h2>
+        <div class="card">
+            <div id="ideaAccountPrompt" style="margin-bottom: 14px;">
+                <p class="active-nick-line" style="margin-bottom: 10px;">
+                    Чтобы отправить идею, создай аккаунт через Google и выбери свой ник:
+                </p>
+                <button type="button" class="btn-google-custom" onclick="startGoogleAuth()">
+                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    Создать аккаунт через Google
+                </button>
+            </div>
+
+            <p class="active-nick-line" id="ideaNickStatus" style="display: none; margin-bottom: 14px;"></p>
+
+            <form class="idea-form" id="ideaForm" onsubmit="submitIdea(event)">
+                <textarea id="ideaTextInput" class="textarea-field" placeholder="Напиши свою идею для нового блока, моба, механики или обновления..." required></textarea>
+                <button type="submit" class="btn-submit-idea">🚀 Отправить идею</button>
+                <div id="ideaStatus" class="status-msg"></div>
+            </form>
+
+            <a href="https://t.me/BLOOKWORLDbot" target="_blank" class="btn-bot-link">
+                💬 Также можно открыть бота напрямую в Telegram (@BLOOKWORLDbot)
+            </a>
+
+            <div class="recent-ideas">
+                <h4>Последние идеи игроков:</h4>
+                <div id="ideasList"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p><strong>BLOOKWORLD</strong> — создано <strong>kot_lgromanchik's Studio</strong> (2026)</p>
+        <p style="margin-top: 6px;">Прямая ссылка на игру: <a href="https://denis2610kak-lgtm.github.io/effective-computing-machine/" target="_blank">denis2610kak-lgtm.github.io</a></p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+        import { getDatabase, ref, set, get, push, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1M9kLfIn7GLDcWamxR5K_EcFi_sNuZkQ",
+            authDomain: "gamestop-fad50.firebaseapp.com",
+            databaseURL: "https://gamestop-fad50-default-rtdb.firebaseio.com",
+            projectId: "gamestop-fad50",
+            storageBucket: "gamestop-fad50.firebasestorage.app",
+            messagingSenderId: "710877966087",
+            appId: "1:710877966087:web:81f237f5ac845b2f8e1fa2",
+            measurementId: "G-BH7XX7DVKN"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        try { getAnalytics(app); } catch (e) {}
+        const db = getDatabase(app);
+
+        window.fbSaveNickname = async function(userId, nickname) {
+            if (!userId || !nickname) return;
+            await set(ref(db, `users/${userId}`), {
+                nickname: nickname,
+                updatedAt: Date.now()
+            });
+        };
+
+        window.fbLoadNickname = async function(userId) {
+            if (!userId) return "";
+            const snap = await get(ref(db, `users/${userId}/nickname`));
+            return snap.exists() ? snap.val() : "";
+        };
+
+        window.fbSaveIdea = async function(nick, text, timeStr) {
+            const newIdeaRef = push(ref(db, "ideas"));
+            await set(newIdeaRef, {
+                nick: nick,
+                text: text,
+                time: timeStr,
+                createdAt: Date.now()
+            });
+        };
+
+        const ideasQuery = query(ref(db, "ideas"), limitToLast(15));
+        onValue(ideasQuery, (snapshot) => {
+            const list = [];
+            snapshot.forEach((child) => {
+                list.push(child.val());
+            });
+            list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            window.renderIdeasList(list);
+        });
+    </script>
+
+    <script>
+        const GOOGLE_CLIENT_ID = "309033937419-m2ainidpqc38qkp623820rs1o10g2u95.apps.googleusercontent.com";
+        const BOT_TOKEN = "9035187158:AAECGEtKAgVb3TpAOKDYuHRW4K2AH4UNBBw";
+        const GROUP_CHAT_ID = -1004429681885;
+        let googleInitialized = false;
+
+        function decodeJwtPayload(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split('')
+                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join('')
+            );
+            return JSON.parse(jsonPayload);
+        }
+
+        async function handleGoogleCredentialResponse(response) {
+            try {
+                const payload = decodeJwtPayload(response.credential);
+                let savedNick = localStorage.getItem("bw_nick_" + payload.sub) || "";
+                if (window.fbLoadNickname) {
+                    const dbNick = await window.fbLoadNickname(payload.sub);
+                    if (dbNick) savedNick = dbNick;
+                }
+                const profile = {
+                    sub: payload.sub,
+                    nickname: savedNick
+                };
+                localStorage.setItem("bw_google_user", JSON.stringify(profile));
+                renderAuthState();
+                if (!savedNick) {
+                    openNickModal();
+                }
+            } catch (err) {
+                console.error("Ошибка входа через Google:", err);
+            }
+        }
+
+        function initGoogleSignIn() {
+            if (googleInitialized) return true;
+            if (window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleCredentialResponse
+                });
+                const container = document.getElementById("googleBtnContainer");
+                if (container && container.childElementCount === 0) {
+                    google.accounts.id.renderButton(container, {
+                        theme: "outline",
+                        size: "medium",
+                        text: "signup_with",
+                        shape: "rectangular"
+                    });
+                }
+                googleInitialized = true;
+                return true;
+            }
+            return false;
+        }
+
+        function startGoogleAuth() {
+            const ready = initGoogleSignIn();
+            if (ready && window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.prompt((notification) => {
+                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                        createFallbackAccount();
+                    }
+                });
+            } else {
+                createFallbackAccount();
+            }
+        }
+
+        function createFallbackAccount() {
+            const existing = localStorage.getItem("bw_google_user");
+            if (!existing) {
+                const profile = {
+                    sub: "google_" + Date.now(),
+                    nickname: ""
+                };
+                localStorage.setItem("bw_google_user", JSON.stringify(profile));
+            }
+            renderAuthState();
+            openNickModal();
+        }
+
+        function renderAuthState() {
+            const raw = localStorage.getItem("bw_google_user");
+            const loggedOutEl = document.getElementById("authLoggedOut");
+            const loggedInEl = document.getElementById("authLoggedIn");
+            const promptEl = document.getElementById("ideaAccountPrompt");
+            const nickStatusEl = document.getElementById("ideaNickStatus");
+
+            if (raw) {
+                const user = JSON.parse(raw);
+                const displayNick = user.nickname || "Без ника";
+                loggedOutEl.style.display = "none";
+                loggedInEl.style.display = "flex";
+                document.getElementById("userNickname").textContent = displayNick;
+
+                promptEl.style.display = "none";
+                nickStatusEl.style.display = "block";
+                nickStatusEl.innerHTML = `Отправка от ника: <strong>${escapeHtml(displayNick)}</strong>`;
+            } else {
+                loggedOutEl.style.display = "flex";
+                loggedInEl.style.display = "none";
+
+                promptEl.style.display = "block";
+                nickStatusEl.style.display = "none";
+            }
+        }
+
+        function logoutGoogle() {
+            localStorage.removeItem("bw_google_user");
+            if (window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.disableAutoSelect();
+            }
+            renderAuthState();
+        }
+
+        function openNickModal() {
+            const raw = localStorage.getItem("bw_google_user");
+            if (!raw) return;
+            const user = JSON.parse(raw);
+            document.getElementById("nickInput").value = user.nickname || "";
+            document.getElementById("nickModal").style.display = "flex";
+        }
+
+        async function saveNickname() {
+            const newNick = document.getElementById("nickInput").value.trim();
+            if (newNick.length < 2) {
+                alert("Ник должен быть не короче 2 символов!");
+                return;
+            }
+            const raw = localStorage.getItem("bw_google_user");
+            if (!raw) return;
+            const user = JSON.parse(raw);
+            user.nickname = newNick;
+            localStorage.setItem("bw_google_user", JSON.stringify(user));
+            if (user.sub) {
+                localStorage.setItem("bw_nick_" + user.sub, newNick);
+                if (window.fbSaveNickname) {
+                    try { await window.fbSaveNickname(user.sub, newNick); } catch (e) {}
+                }
+            }
+            document.getElementById("nickModal").style.display = "none";
+            renderAuthState();
+        }
+
+        async function submitIdea(event) {
+            event.preventDefault();
+            const statusEl = document.getElementById("ideaStatus");
+            const rawUser = localStorage.getItem("bw_google_user");
+
+            if (!rawUser) {
+                statusEl.className = "status-msg status-warn";
+                statusEl.textContent = "⚠️ Сначала нажми «Создать аккаунт через Google»!";
+                startGoogleAuth();
+                return;
+            }
+
+            const user = JSON.parse(rawUser);
+            if (!user.nickname) {
+                openNickModal();
+                return;
+            }
+
+            const nick = user.nickname;
+            const text = document.getElementById("ideaTextInput").value.trim();
+            if (!text) return;
+
+            const timeStr = new Date().toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+            const telegramText = `💡 Новая идея с сайта BLOOKWORLD v1.1!\n\n🎮 Ник: ${nick}\n💬 Идея: ${text}`;
+
+            saveLocalIdea(nick, text, timeStr);
+            if (window.fbSaveIdea) {
+                try { await window.fbSaveIdea(nick, text, timeStr); } catch (e) {}
+            }
+            document.getElementById("ideaTextInput").value = "";
+
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        chat_id: GROUP_CHAT_ID,
+                        text: telegramText
+                    })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    statusEl.className = "status-msg status-success";
+                    statusEl.textContent = "✅ Идея сохранена в Firebase и отправлена в группу Telegram!";
+                    return;
+                }
+            } catch (e) {}
+
+            statusEl.className = "status-msg status-warn";
+            statusEl.innerHTML = `✅ Идея сохранена в Firebase! Чтобы отправить её через бота напрямую, нажмите: <a href="https://t.me/BLOOKWORLDbot?text=${encodeURIComponent(text)}" target="_blank" style="color: #fff; text-decoration: underline;">отправить в @BLOOKWORLDbot</a>`;
+        }
+
+        function saveLocalIdea(nick, text, timeStr) {
+            const ideas = JSON.parse(localStorage.getItem("bw_ideas_list") || "[]");
+            ideas.unshift({ nick, text, time: timeStr });
+            localStorage.setItem("bw_ideas_list", JSON.stringify(ideas.slice(0, 15)));
+            renderIdeasList(ideas);
+        }
+
+        window.renderIdeasList = function(customList) {
+            const listEl = document.getElementById("ideasList");
+            const ideas = Array.isArray(customList)
+                ? customList
+                : JSON.parse(localStorage.getItem("bw_ideas_list") || "[]");
+
+            if (!ideas || ideas.length === 0) {
+                listEl.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">Пока идей нет — напиши первую!</p>`;
+                return;
+            }
+            listEl.innerHTML = ideas.map(item => `
+                <div class="idea-item">
+                    <div class="idea-meta">🎮 ${escapeHtml(item.nick || "Игрок")} • ${escapeHtml(item.time || "")}</div>
+                    <div class="idea-text">${escapeHtml(item.text || "")}</div>
+                </div>
+            `).join("");
+        };
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        function copyGameLink() {
+            const url = "https://denis2610kak-lgtm.github.io/effective-computing-machine/";
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.getElementById("copyBtn");
+                btn.textContent = "✅ Скопировано!";
+                setTimeout(() => {
+                    btn.textContent = "📋 Ссылка на игру";
+                }, 2000);
+            });
+        }
+
+        function updateSnapshotTimer() {
+            const now = new Date();
+            const targetDays = [5, 6];
+            let nearestTarget = null;
+
+            targetDays.forEach(day => {
+                const candidate = new Date(now);
+                const daysUntil = (day - now.getDay() + 7) % 7;
+                candidate.setDate(now.getDate() + daysUntil);
+                candidate.setHours(18, 0, 0, 0);
+
+                if (candidate <= now) {
+                    candidate.setDate(candidate.getDate() + 7);
+                }
+
+                if (!nearestTarget || candidate < nearestTarget) {
+                    nearestTarget = candidate;
+                }
+            });
+
+            const diff = nearestTarget - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / 1000 / 60) % 60);
+            const secs = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("t-days").textContent = String(days).padStart(2, "0");
+            document.getElementById("t-hours").textContent = String(hours).padStart(2, "0");
+            document.getElementById("t-mins").textContent = String(mins).padStart(2, "0");
+            document.getElementById("t-secs").textContent = String(secs).padStart(2, "0");
+        }
+
+        window.addEventListener("load", () => {
+            renderAuthState();
+            renderIdeasList();
+            initGoogleSignIn();
+        });
+
+        setInterval(updateSnapshotTimer, 1000);
+        updateSnapshotTimer();
+    </script>
+
+</body>
+</html>
